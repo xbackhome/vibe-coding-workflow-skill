@@ -17,11 +17,17 @@ Turn a product idea or feature request into small, observable increments. Keep t
 
 Do not turn a small change into a document-heavy project. If the user has already supplied a clear spec, use it instead of restarting discovery. When the user requests implementation, continue through the authorized work; ask only for missing decisions that materially change the result.
 
+## Select tools by need
+
+Use [the task-based tool map](references/tool-map.md) when the user asks which tools to use or when a tool materially improves the current stage. It covers ChatGPT Deep Research for evidence gathering, Google Stitch for UI exploration, Cursor and other coding agents for implementation, browser or computer control for verification, and optional Superpowers or Matt Pocock Skills workflows. Choose available capabilities for the job; mentioning a tool does not authorize installing it. Verify current capabilities before making a tool-specific recommendation.
+
 ## 1. Establish the outcome
 
 Capture who uses the product, the problem, the core user journey, the delivery surface, and what a successful first use looks like. Identify non-negotiable constraints early: platform, deployment, offline or data residency needs, integrations, budget, and accessibility where relevant. Separate known facts, assumptions, and open decisions.
 
 When demand is uncertain, research the intended users, alternatives, and actual workflows before settling the first release. Distinguish observed evidence from guesses. For an interface-heavy product, sketch or prototype the main flow and agree on visual references or interaction behavior before asking an agent to build the UI.
+
+If several external sources must be synthesized, ChatGPT Deep Research can produce a sourced research report; a normal conversation is enough for quick clarification. For UI-heavy work, Google Stitch can help explore screens and a coding agent such as Cursor can implement an approved design. Compare the running UI with the design and verify interaction behavior; never promise a literal 1:1 result from a handoff alone.
 
 For a new product or major technical choice, search for close open-source precedents before recommending a build path. Inspect upstream functionality, maintenance, license, and fit with the stated constraints. Recommend whether to adopt, adapt, reference, or build. If `project-open-source-scout` is available and applicable, follow it. Do not present an invented shortlist when the idea is still unspecified.
 
@@ -56,6 +62,8 @@ Do not treat an external package, starter repository, plugin, or skill as automa
 ## 5. Verify, review, and iterate
 
 Run the smallest meaningful checks available for the changed behavior. Use a real workflow or UI inspection when the feature is interactive. Distinguish what was executed from what remains unverified; never claim success from code inspection alone. Ask the user to exercise the result when their judgment or access is necessary for acceptance.
+
+Give the coding agent browser or computer interaction when the feature requires visual or end-to-end checks and such access is available. Use existing built-in capabilities first; install an additional browser or computer-use plugin only when needed and permitted by the environment.
 
 Review the diff against the spec and project conventions: missing behavior, extra behavior, duplicated code, unnecessary defensive logic, excess abstraction, and unclear naming. When verification fails, diagnose the cause before layering on fixes. Update the working note or spec only for decisions that changed. Create a Git commit at a verified functional milestone if that fits the project's version-control workflow; do not require a commit after every edit.
 
