@@ -18,13 +18,21 @@
 
 1. 先阅读 [SKILL.md](SKILL.md)，确认这套流程是否适合当前任务和 Agent 的能力。
 2. 如果要在支持 `SKILL.md` 的 Agent 中启用，先准备包含 `SKILL.md` 与完整 `references/` 的待安装目录，不包含 `.git`。安装或启用前遵守目标环境的安全扫描与权限要求；本机规则要求对该目录执行 `skillspector scan <待安装目录> --no-llm`，风险评分不高于 50 才能继续。之后将已检查的目录放入该 Agent 实际使用的 Skills 路径，并保持文件相对位置。
-3. 按该 Agent 的调用方式提出任务。例如：
-
-   > 请使用 vibe-coding-workflow 帮我规划一个个人阅读器。先讨论优点、问题和遗漏的场景，调研相似开源项目，再确认首版范围与验收条件；暂时不要写代码。
+3. 按该 Agent 的调用方式提出任务。使用 Codex 时可直接按下节的示例调用。
 
 4. Agent 能否自动发现这份 Skill、能否编辑文件或运行测试，取决于具体应用及其权限。无法执行的环节应保留为待办，不应报告为已完成。
 
 仅阅读方法时，无须安装。需要跨 Agent 分发时，请先阅读[单一来源与分发规则](references/distribution.md)。
+
+### 在 Codex 中调用
+
+在目标项目的 Codex 对话输入框中，输入 `$vibe-coding-workflow`，后面接你的具体任务。例如：
+
+```text
+$vibe-coding-workflow 我想做一个个人阅读器。请先讨论优点、问题和遗漏的场景，调研相似开源项目，再确认首版范围与验收条件；暂时不要写代码。
+```
+
+也可以输入 `/skills`，在 Skill 列表里选择 `vibe-coding-workflow`，然后写任务。这两种显式调用方式见 [OpenAI 官方说明](https://developers.openai.com/blog/eval-skills)。明确指定 Skill 便于确认本次使用了哪套流程；未指定时，Codex 也可能根据 Skill 的名称与描述自行选用。若列表中没有这个名称，先确认 Skill 已安装并被当前 Codex 环境发现，再在新对话中重试；仅打开 GitHub 仓库并不会让 Codex 自动加载它。
 
 ## 工作流程
 
