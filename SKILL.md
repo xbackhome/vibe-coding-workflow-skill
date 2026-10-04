@@ -1,76 +1,108 @@
 ---
 name: vibe-coding-workflow
-description: Use when starting or continuing a software product with AI coding, especially when an idea is vague, a feature needs scoping, or an existing project risks scope drift and accumulating complexity. Guides discovery, implementation, verification, and iteration at a depth proportional to the task.
+description: 在使用 AI Agent 开发或维护软件产品时使用，尤其适用于项目想法模糊、功能范围不清、复杂行为变更或跨会话续作。
 ---
 
-# Vibe Coding Workflow
+# Vibe Coding 工作流程
 
-Turn a product idea or feature request into small, observable increments. Keep the user's goal and constraints authoritative. Choose the lightest process that still exposes consequential decisions and proves the result works.
+把产品想法或功能需求转化为小步、可观察的成果。以用户的目标和约束为准，选择能够明确关键决策、验证成果有效的最简流程。
 
-## Choose the path
+## 选择适合的流程
 
-| Situation | Working path |
+先检查已有资料和相关实现，再按需求清晰度、影响范围、错误代价和会话跨度选择流程，用一句话说明选择与依据。项目处于新建还是维护阶段、改动行数多少，只作为辅助信息。
+
+| 情况 | 工作流程 |
 | --- | --- |
-| Small, well-defined change in an existing project | Inspect relevant code and rules → state expected behavior → change → verify → report. |
-| New product or substantial feature | Clarify outcome and boundaries → scout existing projects → write a brief spec → check repository constraints → plan a vertical slice → implement and verify → iterate. |
-| Exploratory prototype with uncertain demand | Identify the one assumption to test → build the smallest runnable experiment → observe a real user or realistic usage → revise or discard. Record decisions only when they will matter later. |
+| 预期清楚、影响局部且容易检查的小改动 | 检查相关代码和规则 → 说明预期行为 → 修改 → 执行适合的验证 → 汇报。 |
+| Bug 修复 | 复现原始症状 → 定位原因 → 针对真实回归风险建立测试 → 最小修复 → 复验症状与相关行为。无法稳定复现时，先保留诊断证据与未确认原因。 |
+| 范围明确、能在一次会话完成的功能 | 只澄清会影响结果的问题 → 记录简短范围、规则和验收条件 → 分步实施与验证 → 审核和验收。可复用现有规格，不必额外拆任务文档。 |
+| 新产品、复杂功能、重大接口或数据变化、需要持续规划的跨会话功能工作 | 新产品或重大方案选择先调研相似项目，与用户讨论价值、弊端、遗漏的想法和范围；已确认的复杂功能沿用已有结论，只澄清会影响本次交付的缺口 → 记录确认后的规格与验收条件（SDD）→ 检查项目约束 → 按可运行的小功能制定计划 → 映射测试并实施小步 TDD → 审核、处理发现的问题、对照规格验收 → 在授权范围内建立 Git 里程碑。 |
+| 价值、体验或可行性尚不确定的探索原型 | 明确一个待验证假设及观察方法 → 构建最小实验 → 观察真实或接近真实的使用 → 调整、放弃或转入正式实施。进入长期维护前重新确认范围与验证方式。 |
 
-Do not turn a small change into a document-heavy project. If the user has already supplied a clear spec, use it instead of restarting discovery. When the user requests implementation, continue through the authorized work; ask only for missing decisions that materially change the result.
+发现隐藏的跨模块影响、关键矛盾或高代价错误时，补足所需流程；调查证据证明任务更简单时，可以缩减流程并记录理由。已有合格的讨论、规格、计划或审核成果时直接引用，阶段交接不重复启动同一轮工作。用户要求实施时，持续完成已获授权的工作；只有缺失的决策会实质影响结果时才提问。
 
-## Select tools by need
+这里的 SDD 指**规格驱动开发（Spec-driven Development）**：用双方确认的行为要求和约束指导规划、测试、实施与验收，不限定具体框架。新建并持续维护的产品，或涉及较大行为变化的功能，使用 [SDD + TDD 执行规则](references/sdd-tdd.md)。小改动可以沿用现有需求，或写一段简短的验收说明；针对缺陷的回归测试仍可能有价值。文档、低风险配置和纯视觉调整，不必自动增加一整套测试。
 
-Use [the task-based tool map](references/tool-map.md) when the user asks which tools to use or when a tool materially improves the current stage. It covers ChatGPT Deep Research for evidence gathering, Google Stitch for UI exploration, Cursor and other coding agents for implementation, browser or computer control for verification, and optional Superpowers or Matt Pocock Skills workflows. Choose available capabilities for the job; mentioning a tool does not authorize installing it. Verify current capabilities before making a tool-specific recommendation.
+## 按需求选择工具
 
-## 1. Establish the outcome
+用户询问工具选择，或某种能力能明显改善当前阶段的工作时，查阅[按任务选择工具的指南](references/tool-map.md)。按能力组织流程：用检索与研究能力收集证据，用设计、原型或界面生成能力探索交互，用代码编辑与执行能力实施，用测试、浏览器或计算机交互能力验证。具体产品名称仅作为可选示例。
 
-Capture who uses the product, the problem, the core user journey, the delivery surface, and what a successful first use looks like. Identify non-negotiable constraints early: platform, deployment, offline or data residency needs, integrations, budget, and accessibility where relevant. Separate known facts, assumptions, and open decisions.
+根据用户实际使用的 Agent 应用、偏好和当前可用能力调整执行方式。应用可以是对话式助手、IDE 内的 Agent、命令行 Agent、桌面 Agent 或云端 Agent；先确认其代码访问、文件编辑、命令执行、联网检索和界面操作能力，以及运行环境与权限。一款应用具备多项能力时，可在其中完成多个阶段；能力不足时，提供明确的操作步骤或交接材料，由用户或另一款可用工具接续，并说明尚未执行的部分。提到某个工具不代表获得了安装授权；提出具体工具建议前，核实其当前能力。
 
-When demand is uncertain, research the intended users, alternatives, and actual workflows before settling the first release. Distinguish observed evidence from guesses. For an interface-heavy product, sketch or prototype the main flow and agree on visual references or interaction behavior before asking an agent to build the UI.
+## 1. 明确目标，开展前期讨论
 
-If several external sources must be synthesized, ChatGPT Deep Research can produce a sourced research report; a normal conversation is enough for quick clarification. For UI-heavy work, Google Stitch can help explore screens and a coding agent such as Cursor can implement an approved design. Compare the running UI with the design and verify interaction behavior; never promise a literal 1:1 result from a handoff alone.
+明确产品给谁用、解决什么问题、核心使用流程、交付形式，以及用户第一次成功使用时应看到什么结果。尽早识别不可妥协的约束：平台、部署方式、离线或数据存储地域要求、外部集成、预算，以及适用时的无障碍需求。区分已知事实、假设和待定决策。
 
-For a new product or major technical choice, search for close open-source precedents before recommending a build path. Inspect upstream functionality, maintenance, license, and fit with the stated constraints. Recommend whether to adopt, adapt, reference, or build. If `project-open-source-scout` is available and applicable, follow it. Do not present an invented shortlist when the idea is still unspecified.
+对于新想法或尚不确定的想法，先使用[人机头脑风暴指南](references/brainstorming.md)，再确定需求。通过对话讨论项目的优点、弊端、重大风险、遗漏的用户场景或想法，以及现实可行的替代方案。用理由和证据质疑假设，让用户补充领域知识和优先级。将提出的候选想法与已经确认的范围分开记录。已有清晰且确认过的规格，或仅做常规维护时，无须重新启动这一阶段。
 
-## 2. Define the first slice
+根据当前疑问选择用户、产品、技术或测试视角，补查使用场景、首版优先级、可行性与验收方法。当前 Agent 可以完成这些检查，不默认增加角色或子 Agent。用户尚未决定是否值得开发时，基于证据给出进入开发、补充证据或实验、暂缓或放弃的建议，说明依据与剩余未知；最终选择由用户决定。已确认要实施的任务不重复启动项目价值评估。
 
-Resolve ambiguous core terms before detailed questioning. Write a brief, durable spec with:
+需求尚不确定时，先研究目标用户、现有替代方案和实际工作流程，再决定首版范围。区分观察到的证据与推测。界面交互较多的产品，先画出或制作主要流程原型，确认视觉参考或交互行为，再让 Agent 构建界面。
 
-- User outcome and main workflow.
-- In-scope behavior and explicit exclusions for this slice.
-- Business rules, material error cases, and acceptance examples.
-- Constraints that implementation must obey.
-- Open decisions that genuinely block implementation.
+需要综合多个外部来源时，使用当前应用的研究或检索能力，或适合的外部研究工具，生成附来源的调研报告；快速澄清问题用普通对话即可。界面工作较多时，使用当前可用的设计或原型能力探索页面，再由具备代码编辑能力的 Agent 实现已确认的设计。同一应用能完成这些工作时直接衔接；跨应用时交接设计稿、交互说明、规格和验收条件。将实际运行的界面与设计对照，并验证交互；不能仅凭设计交接就承诺实现结果与设计完全一致。
 
-Ask focused questions, preferably with concrete options. Periodically check whether unresolved items would change the implementation or acceptance result. Stop questioning when the core path, key boundaries, and contradictions are resolved. Do not use a fixed question quota.
+新产品或重大技术选择，在推荐开发路径前先搜索高度相似的开源项目。检查上游项目的功能、维护情况、许可证，以及与约束条件的匹配程度。建议直接采用、改造、参考或自行开发，并说明依据。`project-open-source-scout` 可用且适用时，遵循该 Skill。想法尚未明确时，不得编造项目推荐清单。
 
-For a maintained product, the approved spec is the source of truth. Propose changes to it when reality contradicts it; do not silently rewrite requirements or add features. For a throwaway experiment, a few acceptance examples may be enough. Use [the working note template](references/working-note.md) when the work spans multiple sessions or has several decisions to preserve.
+## 2. 定义第一步可交付范围，编写规格
 
-## 3. Inspect the project and plan
+按已选流程执行本节。局部小改动只需引用相关规则并说明预期结果，不要求术语表、编号规格或变更历史。需要规格的任务，在详细提问前先整理原始描述并澄清容易产生歧义的核心术语，记录别名、定义、范围和确认状态。不要自动把“打开文件”和“导入书库”等近似说法合并。将已确认内容、待用户决定、明示的暂定假设、已排除事项分开。写一份简洁、可持续维护的规格，包含：
 
-Read applicable `AGENTS.md`, `CONTEXT.md`, ADRs, conventions, and the relevant code path. Search for existing implementations and reusable utilities. Compare the new spec with existing constraints and surface any conflict before implementation.
+- 用户需要获得的结果和主要流程。
+- 本次包含的行为，以及明确不包含的内容。
+- 业务规则、重要异常情况和验收示例。
+- 实施必须遵守的约束。
+- 确实阻碍实施的待定决策。
 
-For a new repository, establish Git history and a repeatable way to run the product. Record required configuration without committing credentials or private data. Make sure the agent can exercise the feature it is about to build; if the environment cannot run it, state that limitation in the plan.
+为验收条件设置稳定编号，例如 AC-01，并描述可观察的结果。将每条条件对应到自动化检查，或明确的人工验收方法。规格记录必须实现的行为，计划记录如何实现。测试用于提供规格是否满足的证据；不能因为测试方便就改动需求。需求变化时，与用户确认，并同步更新受影响的验收条件、测试和计划。
 
-Choose technology after understanding the required behavior and environment. Favor the simplest design that meets current needs. Explain material trade-offs; leave routine implementation choices to the agent. Plan one runnable vertical slice at a time, with expected behavior and a verification method. Keep progress and confirmed decisions in files when a long session or context compression would otherwise lose them.
+修改已有产品时，引用当前规格基线，明确本次新增、修改或删除的需求、原因与影响，保留未受影响的约束。已确认的目标变更指导实施，验收后将已交付内容整理进后续规格版本，保留变更历史；未验收内容仍标明状态。小改动可以在同一记录中写几行，不强制创建专用变更目录。规则复杂、异常容易遗漏或跨模块时，用“前提—操作—预期结果”补充验收场景；清楚的小改动使用普通验收句子即可。详见 [SDD + TDD 执行规则](references/sdd-tdd.md)。
 
-## 4. Implement without scope drift
+提问前先查已有资料，检查是否已确认或被范围排除，以及答案是否会改变实现、验收或重要取舍。依赖前一答案的问题逐项问，相互独立的问题可少量合并，并优先给出清楚的选项。每轮结束检查核心流程、关键边界和矛盾；无阻塞决策时停止追问。用户指定的提问预算用于提醒检查进度，不能当作必须问满的数量，也不能据此擅自决定尚未确认的需求。
 
-Change only what the current slice requires. Reuse existing conventions and capabilities. Avoid duplicate utilities, speculative abstractions, and fallback values or exception handling that conceal broken assumptions. Keep the data flow readable. If an implementation reveals a requirement conflict, report it and resolve the decision before expanding scope.
+持续维护的产品，以已确认的规格为依据。实际情况与规格矛盾时，提出修改建议，不得默默重写需求或增加功能。一次性实验可能只需要几个验收示例。工作跨多个会话，或有多项决策需要保留时，使用[工作记录模板](references/working-note.md)。
 
-Do not treat an external package, starter repository, plugin, or skill as automatically approved for installation merely because it was found during research. Check its license and follow the environment's required security or approval process before adopting it.
+## 3. 检查项目，制定实施计划
 
-## 5. Verify, review, and iterate
+阅读适用的 `AGENTS.md`、`CONTEXT.md`、架构决策记录（ADR）、项目约定和相关代码。查找已有实现与可复用工具。实施前，将新规格与现有约束对照；发现冲突时列明来源、适用范围、影响和处理决定，区分需求变更、过期文档和实现偏差。重要决策未解决时暂停受影响部分，继续不依赖它的已授权工作。
 
-Run the smallest meaningful checks available for the changed behavior. Use a real workflow or UI inspection when the feature is interactive. Distinguish what was executed from what remains unverified; never claim success from code inspection alone. Ask the user to exercise the result when their judgment or access is necessary for acceptance.
+新仓库应建立 Git 历史和可重复的产品运行方式。记录必要配置，不提交凭据或私密数据。确保 Agent 能实际操作即将构建的功能；环境无法运行时，在计划中说明限制。
 
-Give the coding agent browser or computer interaction when the feature requires visual or end-to-end checks and such access is available. Use existing built-in capabilities first; install an additional browser or computer-use plugin only when needed and permitted by the environment.
+理解行为要求和运行环境后再选择技术。优先采用满足当前需求的最简设计，解释影响较大的取舍，常规实现细节由 Agent 判断。一次规划一个可运行的完整小功能，说明预期行为和验证方法。重要决策确认、一轮讨论结束、阶段切换或准备跨会话交接时，增量更新工作记录。恢复工作先读取记录，再核对实际文件、Git 状态和验证证据，定位尚未完成的下一步。
 
-Review the diff against the spec and project conventions: missing behavior, extra behavior, duplicated code, unnecessary defensive logic, excess abstraction, and unclear naming. When verification fails, diagnose the cause before layering on fixes. Update the working note or spec only for decisions that changed. Create a Git commit at a verified functional milestone if that fits the project's version-control workflow; do not require a commit after every edit.
+沿用项目已有文档结构：工作规则放适用的规则文件，长期术语与背景放上下文或术语表，重要架构取舍放 ADR，本次行为与验收放规格，实施进度与证据放计划或工作记录。通过路径与版本引用已有内容。相关任务暴露冲突、过期内容或重复来源时再整理，涉及已确认需求或重要约束的变更先解决决策。
 
-## Completion report
+采用规格与计划的任务，实施前检查需求、计划与任务是否一致：每条必需需求有对应实施安排和验证方法，每项任务有需求或必要技术工作的依据，各材料引用同一目标规格版本。已有行为满足要求时可以直接引用证据。缺少、冲突或无依据的范围先处理；范围明确的短功能可在一份记录内完成对应关系。局部小改动只需核对预期结果、实际改动与检查方式，不必建立任务映射或独立计划文件。
 
-State what the user can now do, what changed, what was verified and how, and any remaining limitation or decision. A feature is done when its agreed acceptance behavior has been observed, relevant checks have passed or limitations are explicit, and the user can inspect the result.
+采用 SDD + TDD 时，实施每项行为前从验收条件和重要失败边界推导测试用例。选择能够观察该行为且成本最低的测试层级；组件测试无法证明完整流程时，使用集成或端到端检查。先规划测试用例，再逐项行为添加和执行，不必在全部实施前先写出一大套失败测试。其他任务按已选流程使用适合的检查；有真实回归风险的 Bug 修复仍考虑失败测试。
 
-## Example start
+## 4. 小步实施，控制范围
 
-> I want a personal desktop reader that imports UTF-8 TXT files. First establish the core reading flow and first-release boundaries, then look for close open-source readers and recommend adopt, adapt, or build. Check this repository's rules before choosing a stack. Implement one runnable slice, show the verification evidence, and keep decisions in a short working note.
+只修改本次交付所需的内容，复用已有约定与能力。避免重复工具、为假想需求预设的抽象，以及掩盖错误假设的默认值或异常处理。保持数据流清晰。实施中发现需求冲突时，先报告并解决相关决策，再扩大范围。
+
+走 SDD + TDD 流程时，每项行为按以下循环执行：先写一个有意义的测试；运行并确认它因行为缺失或错误而失败；实现最小必要改动；再次运行该测试及相关回归检查；只在检查持续通过时重构。依赖缺失、测试数据无效或语法错误，不能作为所需的“红灯”证据。实现后补写测试属于验证，不能声称已完成先失败再实现的 TDD 循环。无法执行时，说明限制，不得编造失败或通过的证据。不得为让错误行为通过而削弱测试，也不得为重建 TDD 历史而丢弃无关的已有代码。
+
+调研发现外部依赖包、项目模板、插件或 Skill，不代表已获得安装许可。采用前检查许可证，并遵循当前环境要求的安全检查或审批流程。
+
+## 5. 验证、审核与迭代
+
+对修改的行为执行当前可用、最小且有意义的检查。交互功能应通过真实流程或界面操作检查。明确区分已执行的验证与尚未验证的部分；不能仅凭阅读代码宣称成功。验收需要用户判断或用户持有的访问权限时，请用户实际体验成果。
+
+功能需要视觉或端到端检查，且相应权限与能力可用时，让编程 Agent 使用浏览器或计算机交互。优先使用已有内置能力；确有需要且环境允许时，再安装额外的浏览器或计算机操作插件。
+
+审核复杂功能时，先确认审核基点、规格版本与实际改动范围，覆盖本次相关的已提交、暂存和未暂存修改；工具只读取提交差异时，调整审核方式或在已有授权内安排 Git 里程碑。分别检查规格符合性和代码质量，包括遗漏、额外行为、重复代码、不必要的防御逻辑、过度抽象和含糊命名。对每项发现记录修复、据证据驳回、确认延期或待决，修复后复验受影响行为。验证失败先诊断原因；未处理的阻塞问题不能视为审核完成。局部小改动检查实际差异、相关规则和预期结果即可。详见 [SDD + TDD 执行规则](references/sdd-tdd.md)。
+
+审核结果可复用于同一改动版本与已覆盖范围，后续只检查新增修改及相关回归。复杂或高影响工作可在能力与授权允许时使用独立审核 Agent；常规小改动由当前 Agent 检查，缺少独立审核能力时明确说明。符合项目版本管理流程时，在经过验证的功能里程碑建立 Git 提交，不要求每次编辑都提交。
+
+采用 SDD 的任务在测试通过后，仍须逐条对照当前目标规格的验收条件和约束，在测试结果之外核对实际实现与验收证据；这不要求另找一个 Agent。需求变更后同步核对计划、测试和证据，保留与当前版本有关的有效结果；文档之间一致不能替代实际验证。记录“通过、失败或未验证”，并附证据；需要产品判断或无法访问相应环境时，使用人工操作验收。任何必需条件失败或未验证，都不能报告全部验收完成。局部小改动核对预期结果与实际表现即可；部分交付应明确说明。
+
+## 多个 Agent 共用单一来源
+
+在一个源仓库中维护这份 Skill。Agent 的安装目录是分发目标，不作为额外的编辑源。更新或分发时，遵循[单一来源与分发规则](references/distribution.md)。编辑源文件的请求，不自动授权安装、同步或发布到 GitHub。项目规格、计划和测试结果保存在项目内，与通用 Skill 分开。
+
+## 完成报告
+
+说明用户现在可以完成什么、修改了什么；适用时给出规格版本与验收证据；说明实际验证的内容、方法，以及剩余限制或待定事项。区分“实施完成”和“验收完成”。必需条件与约束已得到验证，且用户能够查看成果时，才能将功能标记为已验收。
+
+## 启动示例
+
+> 我想做一个个人桌面阅读器，支持导入 UTF-8 编码的 TXT 文件。请先调研相似阅读器，与我讨论项目的优点、弊端、风险和遗漏的想法，确认阅读流程与首版边界。写一份带验收编号的简短规格，检查仓库规则，并从验收条件推导测试。逐项行为按“红—绿—重构”循环实现，再对照规格验收实际运行的阅读器。用简短的工作记录保存规格版本、测试证据和尚未完成的人工验收事项。
