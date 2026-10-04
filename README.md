@@ -7,6 +7,7 @@
 ## 适用场景
 
 - 新项目还只有初步想法，需要讨论优点、弊端、风险和遗漏的需求。
+- 想审核现有项目或 idea 是否有实际价值、要求是否矛盾、关键能力是否可实现。
 - 功能范围或验收方式不清楚，需要先澄清需求，再动手实现。
 - 复杂功能需要以规格驱动开发（SDD）明确行为与验收条件，再逐项按测试驱动开发（TDD）实施。
 - 跨会话开发需要保存规格版本、决策、进度和验证证据。
@@ -32,12 +33,18 @@
 $vibe-coding-workflow 我想做一个个人阅读器。请先讨论优点、问题和遗漏的场景，调研相似开源项目，再确认首版范围与验收条件；暂时不要写代码。
 ```
 
+仅需审核时可以输入：
+
+```text
+$vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不合理或互相矛盾的要求、项目可能缺少价值的依据和实现阻塞点；分别给出证据、影响与修改建议。先不要改代码。
+```
+
 也可以输入 `/skills`，在 Skill 列表里选择 `vibe-coding-workflow`，然后写任务。这两种显式调用方式见 [OpenAI 官方说明](https://developers.openai.com/blog/eval-skills)。明确指定 Skill 便于确认本次使用了哪套流程；未指定时，Codex 也可能根据 Skill 的名称与描述自行选用。若列表中没有这个名称，先确认 Skill 已安装并被当前 Codex 环境发现，再在新对话中重试；仅打开 GitHub 仓库并不会让 Codex 自动加载它。
 
 ## 工作流程
 
-1. 从 [SKILL.md](SKILL.md) 开始，判断任务属于局部改动、缺陷修复、明确功能、复杂功能，还是探索性原型。
-2. 新项目或重大技术选择先调研相似开源项目；想法尚不明确时，使用[头脑风暴指南](references/brainstorming.md)讨论价值、问题和遗漏的场景。
+1. 从 [SKILL.md](SKILL.md) 开始，判断任务属于项目或想法审核、局部改动、缺陷修复、明确功能、复杂功能，还是探索性原型。
+2. 新项目先用[头脑风暴指南](references/brainstorming.md)澄清目标与约束；有基本理解后调研相似开源项目，并用[合理性审查指南](references/idea-audit.md)核对价值、矛盾与可行性。用户只要求审核现有项目或 idea 时，可以直接从合理性审查开始。
 3. 对需要持续实施的复杂功能，使用 [SDD + TDD 执行规则](references/sdd-tdd.md)：确认规格与验收条件，从中设计测试，逐项经历失败测试、最小实现和重构，最后对照规格验收。
 4. 需要跨会话接续时，使用[工作记录模板](references/working-note.md)保存目标、决策、规格版本、进度和证据。[工具选择指南](references/tool-map.md)提供按能力选择工具的参考。
 
@@ -49,6 +56,7 @@ $vibe-coding-workflow 我想做一个个人阅读器。请先讨论优点、问�
 | --- | --- |
 | [SKILL.md](SKILL.md) | 入口与流程选择规则 |
 | [references/brainstorming.md](references/brainstorming.md) | 项目初期的人机讨论 |
+| [references/idea-audit.md](references/idea-audit.md) | 项目或想法的价值、矛盾与可行性审查 |
 | [references/sdd-tdd.md](references/sdd-tdd.md) | 规格、测试、实施与验收 |
 | [references/tool-map.md](references/tool-map.md) | 按任务和 Agent 能力选择工具 |
 | [references/working-note.md](references/working-note.md) | 跨会话工作记录模板 |
