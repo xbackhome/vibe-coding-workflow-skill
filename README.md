@@ -44,11 +44,13 @@ $vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不�
 ## 工作流程
 
 1. 从 [SKILL.md](SKILL.md) 开始，判断任务属于项目或想法审核、局部改动、缺陷修复、明确功能、复杂功能，还是探索性原型。
-2. 新项目先用[头脑风暴指南](references/brainstorming.md)澄清目标与约束；有基本理解后调研相似开源项目，并用[合理性审查指南](references/idea-audit.md)核对价值、矛盾与可行性。用户只要求审核现有项目或 idea 时，可以直接从合理性审查开始。
+2. 新想法先用[头脑风暴指南](references/brainstorming.md)澄清基本目标与约束，再按[开源项目匹配规则](references/open-source-scout.md)加载 `project-open-source-scout` 调研相似项目，随后用[合理性审查指南](references/idea-audit.md)核对价值、矛盾与可行性。项目审核、规划、架构、技术、依赖和实施路径决策也先做匹配；清楚的局部维护无须重复调研。
 3. 对需要持续实施的复杂功能，使用 [SDD + TDD 执行规则](references/sdd-tdd.md)：确认规格与验收条件，从中设计测试，逐项经历失败测试、最小实现和重构，最后对照规格验收。
 4. 需要跨会话接续时，使用[工作记录模板](references/working-note.md)保存目标、决策、规格版本、进度和证据。[工具选择指南](references/tool-map.md)提供按能力选择工具的参考。
 
 小改动可以沿用已有需求和检查方式，不要求完整规格或一套新测试。安装到不同 Agent、更新副本或发布版本时，参照[单一来源与分发规则](references/distribution.md)；编辑仓库文件不会自动更新已安装副本。
+
+`project-open-source-scout` 是独立 Skill，本仓库不附带或自动安装它。当前 Agent 已安装时按其现行规则执行；未安装时，`vibe-coding-workflow` 仍可按仓库内的[最低调研要求](references/open-source-scout.md)完成匹配，并明确说明实际调研范围。开源匹配只形成有依据的建议，采用路径由用户决定。
 
 ## 文件说明
 
@@ -57,6 +59,7 @@ $vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不�
 | [SKILL.md](SKILL.md) | 入口与流程选择规则 |
 | [references/brainstorming.md](references/brainstorming.md) | 项目初期的人机讨论 |
 | [references/idea-audit.md](references/idea-audit.md) | 项目或想法的价值、矛盾与可行性审查 |
+| [references/open-source-scout.md](references/open-source-scout.md) | 开源项目匹配的触发、最低要求与阶段交接 |
 | [references/sdd-tdd.md](references/sdd-tdd.md) | 规格、测试、实施与验收 |
 | [references/tool-map.md](references/tool-map.md) | 按任务和 Agent 能力选择工具 |
 | [references/working-note.md](references/working-note.md) | 跨会话工作记录模板 |
