@@ -18,7 +18,7 @@
 ## 快速开始
 
 1. 先阅读 [SKILL.md](SKILL.md)，确认这套流程是否适合当前任务和 Agent 的能力。
-2. 如果要在支持 `SKILL.md` 的 Agent 中启用，先准备包含 `SKILL.md` 与完整 `references/` 的待安装目录，不包含 `.git`。安装或启用前遵守目标环境的安全扫描与权限要求；本机规则要求对该目录执行 `skillspector scan <待安装目录> --no-llm`，风险评分不高于 50 才能继续。之后将已检查的目录放入该 Agent 实际使用的 Skills 路径，并保持文件相对位置。
+2. 如果要在支持 `SKILL.md` 的 Agent 中启用，先准备包含 `SKILL.md`、完整 `references/` 与 `subskills/` 的待安装目录，不包含 `.git`。安装或启用前遵守目标环境的安全扫描与权限要求；本机规则要求对该目录执行 `skillspector scan <待安装目录> --no-llm`，风险评分不高于 50 才能继续。之后将已检查的目录放入该 Agent 实际使用的 Skills 路径，并保持文件相对位置。
 3. 按该 Agent 的调用方式提出任务。使用 Codex 时可直接按下节的示例调用。
 
 4. Agent 能否自动发现这份 Skill、能否编辑文件或运行测试，取决于具体应用及其权限。无法执行的环节应保留为待办，不应报告为已完成。
@@ -38,6 +38,14 @@ $vibe-coding-workflow 我想做一个个人阅读器。请先讨论优点、问�
 ```text
 $vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不合理或互相矛盾的要求、项目可能缺少价值的依据和实现阻塞点；分别给出证据、影响与修改建议。先不要改代码。
 ```
+
+说不清想要的界面风格时可以输入：
+
+```text
+$vibe-coding-workflow 我说不清视觉偏好。请先调用三方向视觉预览子 Skill，用相同内容和功能做三个能看的界面方向；等我选择后再实现。
+```
+
+子 Skill 位于本仓库的 `subskills/`，由 `vibe-coding-workflow` 读取；本仓库没有将其单独注册为 `$vibe-visual-direction-preview`。Impeccable 是可选的外部设计工具，当前仓库不会自动安装它。
 
 也可以输入 `/skills`，在 Skill 列表里选择 `vibe-coding-workflow`，然后写任务。这两种显式调用方式见 [OpenAI 官方说明](https://developers.openai.com/blog/eval-skills)。明确指定 Skill 便于确认本次使用了哪套流程；未指定时，Codex 也可能根据 Skill 的名称与描述自行选用。若列表中没有这个名称，先确认 Skill 已安装并被当前 Codex 环境发现，再在新对话中重试；仅打开 GitHub 仓库并不会让 Codex 自动加载它。
 
@@ -68,6 +76,7 @@ $vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不�
 | [references/tool-map.md](references/tool-map.md) | 按任务和 Agent 能力选择工具 |
 | [references/working-note.md](references/working-note.md) | 跨会话工作记录模板 |
 | [references/distribution.md](references/distribution.md) | 单一来源、留存与分发 |
+| [subskills/vibe-visual-direction-preview/SKILL.md](subskills/vibe-visual-direction-preview/SKILL.md) | 三方向可见预览、选择后实施与页面检查 |
 
 ## 项目状态与反馈
 
