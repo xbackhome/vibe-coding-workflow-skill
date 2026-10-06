@@ -52,6 +52,8 @@ $vibe-coding-workflow 请审核这个项目的目标和现有方案：找出不�
 
 `project-open-source-scout` 是独立 Skill，本仓库不附带或自动安装它。当前 Agent 已安装时按其现行规则执行；未安装时，`vibe-coding-workflow` 仍可按仓库内的[最低调研要求](references/open-source-scout.md)完成匹配，并明确说明实际调研范围。开源匹配只形成有依据的建议，采用路径由用户决定。
 
+开源清单交付前还要过[检索充分性门槛](references/open-source-scout.md#检索充分性门槛)：扩展关键词与解决路径，复查可能遗漏的高匹配项目，并说明证据边界。检索受限时交付初步清单，不把少量搜索结果当作全貌。
+
 选择自建后仍先识别可借鉴或合规复用的现有代码、技术方案与设计思路，只自行实现确有缺口的部分。具体取舍见[自建路径规则](references/open-source-scout.md#用户选择自建时)。
 
 ## 文件说明
