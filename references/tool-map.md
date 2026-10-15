@@ -41,6 +41,8 @@
 | BMAD | 按当前问题切换用户、产品、技术、测试视角，发现需求与验收缺口 | 新想法或复杂且不清楚的功能；局部维护只选有关视角 | [人机讨论指南](brainstorming.md) |
 | Spec Kit（可选） | 基于证据给出进入开发、补证或实验、暂缓或放弃的建议 | 用户尚未决定新想法是否值得投入 | [想法评估](brainstorming.md) |
 | OpenSpec（可选） | 用前提、操作、预期结果描述验收场景 | 规则有歧义、异常易遗漏或跨模块；清晰句子无需改写 | [场景化验收](sdd-tdd.md) |
+| Matt Pocock Skills | 为复杂 Bug 建立能显示原始症状的可靠反馈方式；按可独立验证的结果拆任务并记录真实前置依赖 | 难复现问题、复杂或跨会话实施；普通小任务沿用简短流程 | [复杂 Bug 诊断](diagnosing-bugs.md)、[可验证切片](sdd-tdd.md#可验证切片与依赖) |
+| Matt Pocock Skills | 用边界场景核对术语与代码；区分视觉和状态／逻辑原型；只在重复阻碍时回看开发环境 | 术语会改变业务规则、原型能解决具体疑问，或同类阻碍反复出现时 | [讨论与原型](brainstorming.md)、[工作记录](working-note.md) |
 
 本 Skill 不复制这些项目的完整角色体系、命令链、安装器、多仓库共享存储或自动同步机制。只有用户需要实际接入相应工具时，才核查当前上游版本、配置、授权和安全要求。已有头脑风暴、TDD 和任务分级直接沿用，避免叠加同类流程。
 
@@ -76,6 +78,11 @@
 - [Matt grilling 的当前节奏](https://github.com/mattpocock/skills/blob/main/docs/productivity/grilling.md)
 - [Matt implement 的调用与提交规则](https://github.com/mattpocock/skills/blob/main/skills/engineering/implement/SKILL.md)
 - [Matt code-review 的差异范围](https://github.com/mattpocock/skills/blob/main/skills/engineering/code-review/SKILL.md)
+- [Matt diagnosing-bugs 的反馈循环](https://github.com/mattpocock/skills/blob/main/skills/engineering/diagnosing-bugs/SKILL.md)
+- [Matt to-tickets 的可验证切片与依赖](https://github.com/mattpocock/skills/blob/main/skills/engineering/to-tickets/SKILL.md)
+- [Matt domain-modeling 的术语核对](https://github.com/mattpocock/skills/blob/main/skills/engineering/domain-modeling/SKILL.md)
+- [Matt prototype 的探索原型](https://github.com/mattpocock/skills/blob/main/skills/engineering/prototype/SKILL.md)
+- [Matt retro 的环境改进](https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md)
 - [Spec Kit 的规格实施与想法评估流程](https://github.com/github/spec-kit)
 - [OpenSpec 的规格、变更与场景概念](https://github.com/Fission-AI/OpenSpec/blob/main/docs/concepts.md)
 - [BMAD 的专业视角与按需规划](https://github.com/bmad-code-org/BMAD-METHOD)
